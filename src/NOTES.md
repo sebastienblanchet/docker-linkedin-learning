@@ -4,6 +4,7 @@
   - [Chapter 4: Under the Hood](#chapter-4-under-the-hood)
     - [4.1 Docker Program](#41-docker-program)
     - [4.2 Network & Namespaces](#42-network--namespaces)
+    - [4.3 Processes & cgroups](#43-processes--cgroups)
 
 ## Chapter 4: Under the Hood
 
@@ -42,3 +43,20 @@ docker run -ti --rm --net=host --privileged=true ubuntu bash
 # REALLY JUST PORT FORWARDING
 docker run -p 8080:8080
 ```
+
+### 4.3 Processes & cgroups
+
+> Docker starts with init (usual), when init exits, container is dead
+
+```bash
+## starting a container and finding init PID
+docker run -ti --rm --name {name} ubuntu bash
+#jQuery like
+docker inspect --format '{{.State.Pid}}' {name}
+
+# adding --pid=host to docker run allow access to kill proccess
+
+# ressource limiting
+```
+
+<!-- ### 4.4 Storage -->
