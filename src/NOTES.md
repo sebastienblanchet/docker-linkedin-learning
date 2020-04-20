@@ -1,53 +1,21 @@
 # Notes
 
 - [Notes](#notes)
-  - [Chapter 3: Building Docker Files](#chapter-3-building-docker-files)
-    - [3.1 Intro](#31-intro)
-    - [3.2 Building](#32-building)
-    - [3.3 Dockerfile Syntax](#33-dockerfile-syntax)
+  - [Chapter 4: Under the Hood](#chapter-4-under-the-hood)
+    - [4.1 Docker Program](#41-docker-program)
+    - [4.2 Network & Namespaces](#42-network--namespaces)
 
-## Chapter 3: Building Docker Files
+## Chapter 4: Under the Hood
 
-### 3.1 Intro
+### 4.1 Docker Program
 
-> What ? Small program to create image
+* Uses `cgroups` to contain processes
+* Uses `namespaces` to contain networks
+* Uses `copy-on-write` filesystems to build images
+* Docker is 2 programs: client & server
 
-```bash
-docker build -t {name} .
+**Scripting distributed systems**
 
-# dockerfiles uses cached
-# NOT shell scripts
-# each line is a container, passed into next etc..
+Found in `/var/run/docker.sock`.
 
-## persistent environment vars
-ENV {name}
-```
-
-### 3.2 Building
-
-```bash
-# ex output
-docker build -t first .
-Sending build context to Docker daemon  3.072kB
-Step 1/3 : FROM debian:sid
-Step 2/3 : RUN echo "building simple docker image"
-Step 3/3 : CMD echo "first container from dockerfile"
-```
-
-### 3.3 Dockerfile Syntax
-
-Keywords:
-
-```dockerfile
-FROM
-MAINTAINER
-RUN
-ADD
-ENV
-ENTRYPOINT
-CMD
-EXPOSE
-VOLUME
-WORKDIR
-USER
-```
+### 4.2 Network & Namespaces
