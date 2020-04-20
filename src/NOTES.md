@@ -19,3 +19,26 @@
 Found in `/var/run/docker.sock`.
 
 ### 4.2 Network & Namespaces
+
+> uses bridges (i.e. software switches) to create virtual network
+
+Within docker, download and run:
+```
+brctl show
+
+# outside
+docker network create {name}
+
+# will now have ^^
+brctl show
+
+# show how docker uses port forwarding to RX/TX packets
+# network adressing tabes
+sudo iptables -n -L -t nat
+
+# run docker with all accesses to local network
+docker run -ti --rm --net=host --privileged=true ubuntu bash
+
+# REALLY JUST PORT FORWARDING
+docker run -p 8080:8080
+```
