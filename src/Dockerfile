@@ -1,6 +1,11 @@
-# build with
-# in cwd
-# docker build -t name .
+# example nanoer
 FROM debian:sid
-RUN echo "building simple docker image"
-CMD echo "first container from dockerfile"
+RUN apt-get -y update
+RUN apt-get install nano
+# run cmd[0] on start with args [1]
+CMD ["/bin/nano", "/tmp/notes"]
+
+# in antoher dockerfile
+FROM example/nanoer
+ADD notes.txt /notes.txt
+CMD ["nano", "/notes.txt"]
