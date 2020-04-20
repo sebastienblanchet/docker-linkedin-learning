@@ -1,86 +1,22 @@
 # Notes
 
 - [Notes](#notes)
-  - [Chapter 4: Under the Hood](#chapter-4-under-the-hood)
-    - [4.1 Docker Program](#41-docker-program)
-    - [4.2 Network & Namespaces](#42-network--namespaces)
-    - [4.3 Processes & cgroups](#43-processes--cgroups)
-    - [4.4 Storage](#44-storage)
+  - [Chapter 5: Orchestration Build Systems with Docker](#chapter-5-orchestration-build-systems-with-docker)
+    - [5.1 Registries](#51-registries)
 
-## Chapter 4: Under the Hood
+## Chapter 5: Orchestration Build Systems with Docker
 
-### 4.1 Docker Program
-
-* Uses `cgroups` to contain processes
-* Uses `namespaces` to contain networks
-* Uses `copy-on-write` filesystems to build images
-* Docker is 2 programs: client & server
-
-**Scripting distributed systems**
-
-Found in `/var/run/docker.sock`.
-
-### 4.2 Network & Namespaces
-
-> uses bridges (i.e. software switches) to create virtual network
-
-Within docker, download and run:
-```
-brctl show
-
-# outside
-docker network create {name}
-
-# will now have ^^
-brctl show
-
-# show how docker uses port forwarding to RX/TX packets
-# network adressing tabes
-sudo iptables -n -L -t nat
-
-# run docker with all accesses to local network
-docker run -ti --rm --net=host --privileged=true ubuntu bash
-
-# REALLY JUST PORT FORWARDING
-docker run -p 8080:8080
-```
-
-### 4.3 Processes & cgroups
-
-> Docker starts with init (usual), when init exits, container is dead
+### 5.1 Registries
 
 ```bash
-## starting a container and finding init PID
-docker run -ti --rm --name {name} ubuntu bash
-#jQuery like
-docker inspect --format '{{.State.Pid}}' {name}
+docker run -d -p 5000:5000 --restart=always --name reg reg:2
 
-# adding --pid=host to docker run allow access to kill proccess
+# tag and push to local registry
+docker tag ubuntu localhost:5000/myorg/mylinux:99
+docker push localhost:5000/myorg/mylinux:99
 
-# ressource limiting
-```
-
-### 4.4 Storage
-
-Docker is really just:
-* actual store (ssd)
-  * paritions of that drives
-    * filesystems
-      * programs as filesystem (COWS: copy on write system)
-
-> COWS: start with base ref and ANY write ops is actually just a **copy**
-
-```bash
-# recall the DWTFYW container
-docker run -ti --rm --priviliged=true ubuntu bash
-
-# make some files in multiple dirs
-ls -R
-
-# MOUNT Order is important
-mount -o bind dir1 dir2
-# files from dir2 will be UNDER the contents from dir1
-
-#revert
-umount dir2
+# OR
+docker save -o fName.tar.gz {img1, img2, ...}
+docker rmi {img1, img2, ...}
+docker load -i fName.tar.gz
 ```
