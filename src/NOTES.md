@@ -5,7 +5,6 @@
     - [3.1 Intro](#31-intro)
     - [3.2 Building](#32-building)
     - [3.3 Dockerfile Syntax](#33-dockerfile-syntax)
-    - [3.4 Multi-Project Docker Files](#34-multi-project-docker-files)
 
 ## Chapter 3: Building Docker Files
 
@@ -51,9 +50,4 @@ EXPOSE
 VOLUME
 WORKDIR
 USER
-```
-
-### 3.4 Multi-Project Docker Files
-
-```bash
 ```

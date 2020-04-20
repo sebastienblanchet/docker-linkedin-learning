@@ -1,11 +1,8 @@
+# docker build -t name .
+# docker run name
 # example nanoer
 FROM debian:sid
 RUN apt-get -y update
-RUN apt-get install nano
-# run cmd[0] on start with args [1]
-CMD ["/bin/nano", "/tmp/notes"]
-
-# in antoher dockerfile
-FROM example/nanoer
-ADD notes.txt /notes.txt
-CMD ["nano", "/notes.txt"]
+RUN apt-get -y install curl
+RUN curl https://google.com | wc -c > google-size
+ENTRYPOINT echo google this is big; cat google-size
