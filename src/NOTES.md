@@ -5,6 +5,7 @@
     - [4.1 Docker Program](#41-docker-program)
     - [4.2 Network & Namespaces](#42-network--namespaces)
     - [4.3 Processes & cgroups](#43-processes--cgroups)
+    - [4.4 Storage](#44-storage)
 
 ## Chapter 4: Under the Hood
 
@@ -59,4 +60,27 @@ docker inspect --format '{{.State.Pid}}' {name}
 # ressource limiting
 ```
 
-<!-- ### 4.4 Storage -->
+### 4.4 Storage
+
+Docker is really just:
+* actual store (ssd)
+  * paritions of that drives
+    * filesystems
+      * programs as filesystem (COWS: copy on write system)
+
+> COWS: start with base ref and ANY write ops is actually just a **copy**
+
+```bash
+# recall the DWTFYW container
+docker run -ti --rm --priviliged=true ubuntu bash
+
+# make some files in multiple dirs
+ls -R
+
+# MOUNT Order is important
+mount -o bind dir1 dir2
+# files from dir2 will be UNDER the contents from dir1
+
+#revert
+umount dir2
+```
